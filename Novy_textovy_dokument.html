@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>taper</title>
+
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: arial;
+			box-sizing: border-box;
+		}
+
+		body {
+			background: #232826;
+		}
+
+		button {
+			cursor: pointer;
+		}
+
+		li,
+		ul {
+			list-style: none;
+			display: inline-block;
+			content: "";
+		}
+
+		#main {
+			max-width: 900px;
+			width: 100%;
+			margin: 100px auto 20px auto;
+			overflow-x: hidden;
+		}
+
+		#mxwidth {
+			width: 100%;
+			margin: 0 auto;
+		}
+
+		#win {
+			position: absolute;
+			border-left: 10px solid transparent;
+			border-right: 10px solid transparent;
+			border-top: 10px solid #fefefe;
+			top: 101px;
+			left: 49.5%;
+		}
+
+		#boxes {
+			/* width: 100%; */
+			/* height: 150px; */
+		}
+
+		.mainbutt {
+			padding: 15px 35px;
+			color: #00DF7E;
+			background: rgba(0, 0, 0, 0.5);
+			font-weight: bold;
+			letter-spacing: 1px;
+			border: none;
+			border: 1px #00DF7E solid;
+			display: block;
+			border-radius: 30px;
+			margin: 0 auto;
+			outline: none;
+		}
+
+		h1 {
+			color: white;
+		}
+
+
+		/* .opn {
+			position: absolute;
+			z-index: 6;
+			background: rgba(0, 0, 0, 0.8);
+			padding: 10px;
+			border: 1px #dedede solid;
+			display: none;
+		} */
+
+		.header {
+			display: table;
+			width: 96%;
+			margin: 20px auto 0px auto;
+		}
+
+		.logo {
+			width: 400px;
+			display: block;
+			margin: 0px auto 40px auto;
+		}
+
+		.state {
+			color: blue;
+			background: black;
+			padding: 20px 10px;
+			position: absolute;
+			bottom: 0px;
+			border-top: 1px blue solid;
+
+		}
+
+		.blscreen {
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.8);
+			position: absolute;
+			top: 0px;
+			display: none;
+		}
+
+		.addimg {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.winblock {
+			max-width: 300px;
+			width: 100%;
+			background: #1C201F;
+			display: block;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		.winblock h3 {
+			color: #fbfbfb;
+			text-align: center;
+			padding-bottom: 5px;
+		}
+
+		.winblock img {
+			/* margin: 0 auto;
+			display: block;
+			border: 1px #00DF7E solid;
+			box-shadow: 0 0 80px 1px rgba(0, 220, 100, 0.4);
+			height: 150px;
+			width: 170px; */
+			max-width: inherit;
+		}
+
+		.winblock span {
+			border: none;
+		}
+
+		.winbutt {
+			color: #fbfbfb;
+			margin: 0 auto;
+			display: block;
+			padding: 10px 55px;
+			font-size: 18px;
+			background: linear-gradient(90deg, #4AFFBE, #00DF7E);
+			border: none;
+			border-bottom: 3px #00BA84 solid;
+		}
+
+		.winblock span {
+			padding: 0;
+			font-size: 12px;
+		}
+
+		.close {
+			background: none;
+			color: #606663;
+			font-size: 35px;
+			border: none;
+			height: 40px;
+			position: relative;
+			left: 90%;
+		}
+
+		.wininp {
+			background: #1E1B1B;
+			padding: 15px 20px;
+			border: 1px #00DF7E solid;
+			margin: 10px auto;
+			display: block;
+			color: #fbfbfb;
+		}
+
+		.tape-img {
+			margin: 0px;
+			padding: 30px 20px 5px 20px;
+			width: 100%;
+			max-width: 164px;
+			object-fit: contain;
+			height: 100%;
+			position: relative;
+		}
+
+		.tape {
+			position: relative;
+			/* right: 20px; */
+			/* height: 150px; */
+			max-width: 205px;
+			width: 100%;
+			padding: 30px 10px 9px 10px;
+			text-align: center;
+		}
+
+		.tape__info {
+			background: #7668CB;
+			border-radius: 0px 0px 4px 4px;
+			color: #C0C0C2;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 20px;
+			font-family: 'Roboto', sans-serif;
+			padding: 1px 10px;
+			text-align: left;
+		}
+
+		.tape__info-name {
+			font-family: 'Roboto', sans-serif;
+		}
+
+		.tape__info-price {
+			font-family: 'Roboto', sans-serif;
+		}
+
+		.tape__info-price span {
+			color: #fff;
+		}
+	</style>
+
+
+<body>
+	<div id="main">
+		<div id="mxwidth">
+			<!-- Сюда выводятся объекты массива CATALOG -->
+		</div>
+		<div id="win">
+		</div>
+	</div>
+	<button onclick="start()" class="mainbutt">Крутить</button>
+
+	<!-- <div class="state"></div> -->
+	<div class="blscreen">
+		<div class="winblock">
+			<button class="close">×</button>
+			<h3>Ваш выйгрыш</h3>
+			<div class="addimg">
+				<!-- Сюда выводится картинка выигранного скина -->
+			</div>
+			<input type="name" placeholder="Ваш ник" class="wininp">
+			<button onclick="start()" class="winbutt">Крутить еще</button>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script>
+		// Каталог всех скинов
+		const CATALOG = [
+			{
+				id: '0',
+				name: 'AK-47 Black',
+				img: 'img/skin1.png',
+				price: 800,
+			},
+			{
+				id: '1',
+				name: 'AK-47 Azimov',
+				img: 'img/skin2.png',
+				price: 1600,
+			},
+			{
+				id: '2',
+				name: 'AK-47 3',
+				img: 'img/skin3.png',
+				price: 400,
+			},
+			{
+				id: '3',
+				name: 'M-16 1',
+				img: 'img/skin4.png',
+				price: 380,
+			},
+			{
+				id: '4',
+				name: 'AK-47 4',
+				img: 'img/skin5.png',
+				price: 10,
+			},
+			{
+				id: '5',
+				name: 'AVP 1',
+				img: 'img/skin6.png',
+				price: 99999,
+			},
+			{
+				id: '6',
+				name: 'AK-47 5',
+				img: 'img/skin7.png',
+				price: 400,
+			},
+			{
+				id: '7',
+				name: 'AVP Azimov',
+				img: 'img/skin8.png',
+				price: 380,
+			},
+			{
+				id: '8',
+				name: 'GLOCK',
+				img: 'img/skin9.png',
+				price: 10,
+			},
+			{
+				id: '9',
+				name: 'AVP black',
+				img: 'img/skin10.png',
+				price: 99999,
+			},
+			{
+				id: '10',
+				name: 'M-16 red',
+				img: 'img/skin11.png',
+				price: 18098,
+			},
+			{
+				id: '11',
+				name: 'AVP purple',
+				img: 'img/skin12.png',
+				price: 1256,
+			},
+			{
+				id: '12',
+				name: 'M-4 azimov',
+				img: 'img/skin13.png',
+				price: 8778,
+			},
+			{
+				id: '13',
+				name: 'DEAGLE flame',
+				img: 'img/skin14.png',
+				price: 656,
+			},
+			{
+				id: '14',
+				name: 'Knife',
+				img: 'img/skin15.png',
+				price: 436,
+			},
+			{
+				id: '15',
+				name: 'AK-47 ',
+				img: 'img/skin16.png',
+				price: 124,
+			},
+			{
+				id: '16',
+				name: 'Kerambit',
+				img: 'img/skin17.png',
+				price: 12124,
+			},
+			{
+				id: '17',
+				name: 'Paired knife',
+				img: 'img/skin18.png',
+				price: 2141254,
+			},
+		]
+		const ROOT_PRODUCTS = document.getElementById('mxwidth') // Получаем обёртку куда выводятся все скины
+
+		class Skins { // Отрисовывает каждый элемент массива по шаблону 
+			render() {
+				let htmlCatalog = '';
+				CATALOG.forEach(({ id, name, img, price }) => {
+					htmlCatalog += `
+				<li id="${id}" class="tape">
+					<img src="${img}" alt="${id}" class="tape-img">
+					<div class="tape__info">
+						<p class="tape__info-name">${name}</p>	
+						<p class="tape__info-price">From <span>$ ${price}</span></p>
+					</div>
+				</li>
+			`;
+				});
+
+				const html = ` 
+			<ul id="boxes">
+				${htmlCatalog}
+			</ul>
+		`; // Отрисовывает обёртку со всеми элементами массива
+
+				ROOT_PRODUCTS.innerHTML = html;
+			}
+		}
+
+
+		const skinsPage = new Skins();
+		skinsPage.render()
+
+
+		const allTapes = Array.from(document.querySelectorAll('.tape')) // Получаем массив уже отрендеренных скинов
+		const allTapesNum = allTapes.length; //Получаем длину этого массива 
+
+		const tapeWidth = document.querySelector('.tape').clientWidth // считаем ширину одного скина
+		const tapesWrapper = document.querySelector('#boxes').setAttribute('style', `width: ${tapeWidth * allTapesNum * 1.5}px`) // Задаём ширину обёртке скинов на основе ширины одного скина и и их количества
+
+
+		function start() {
+
+			var boxed = 3; // начинаем считать кейсы
+			var righ = 0;   // делаем анимацию увеличивая позицию в право
+			var speed = Math.floor(Math.random() * (20 - 25 + 1)) + 25;  // Скорость прокрутки рулетки
+			var delbox = tapeWidth; //Ширина кейса для удаления его
+			var tim = setInterval(animated, 5);
+
+			$(".mainbutt").css("opacity", "0.5");
+			$(".mainbutt").removeAttr("onclick");
+
+			function animated() {
+
+				var child3 = $(".tape:nth-child(3) img"); // Подсвечиваем товар которdый по середине
+				var firS = $(".tape:first-child");
+				var cons = righ - delbox;	 //считаем на сколько блок зашел за границу
+
+
+				if (righ >= delbox) { 		//если блок за границей
+					firS.remove();			// удаляем его
+
+					let randCata = CATALOG.length // Рассчёт длины массива
+					let getRandCata = Math.floor(Math.random() * (randCata)) // Берём случайное число в диапозоне длины массива
+					let randCataItem = (CATALOG[getRandCata]) // Берём случайный объект из массива по случайному числу 
+
+					$("#boxes").append(`<li class='tape'>
+						<img src='${randCataItem.img}' alt='${randCataItem.id}' class='tape-img'>
+						<div class="tape__info">
+							<p class="tape__info-name">${randCataItem.name}</p>	
+							<p class="tape__info-price">From <span>$ ${randCataItem.price}</span> </p>
+						</div>
+						</li>`); // Отрисовываем новый случайный объект в рулетку
+
+					righ = cons + speed;
+					$(".tape").css("right", righ + "px");
+					boxed++; // Считаем кол-во блоков		
+				} else {
+					if (speed <= 2) {
+						speed -= 0.003;
+					} else if (speed <= 6) {
+						speed -= 0.007;
+					} else {
+						speed -= 0.02;
+					}
+					righ += speed;
+					$(".tape").css("right", righ + "px");
+				}
+				if (speed <= 0) {
+					clearInterval(tim);
+					$(".tape").animate({ right: `${delbox / 2}` }, 2400);
+					let wonItemId = $(".tape:nth-child(3) img").attr("alt") // Берём число в атрибуте alt выигранного скина
+					let wonItem = CATALOG[wonItemId] // По этому числу находим в массиве выигранный скин
+
+					$(".winblock .addimg").append(`
+					<li class='tape'>
+						<img src='${wonItem.img}' alt='${wonItem.id}' class='tape-img'>
+						<div class="tape__info">
+							<p class="tape__info-name">${wonItem.name}</p>	
+							<p class="tape__info-price">From <span>$ ${wonItem.price}</span> </p>
+						</div>
+					</li>`); // Отрисовываем новый случайный объект в рулетку
+					setTimeout(swi, 2500);
+				}
+			}
+		}
+		function swi() {
+			var nnu = $(".tape:nth-child(3) img").attr("alt");
+
+			$(".mainbutt").attr("onclick", "start()");
+			$(".blscreen").toggle(400);
+			$("button").css("opacity", "1");
+
+			let winBlockId = nnu
+			return winBlockId
+		}
+		//делаем список что выпадает
+		$(function () {
+			$(".close,.winbutt").click(function () {
+				$(".blscreen").toggle(400);
+			})
+		});
+
+
+	</script>
+</body>
+
+</html>
+</head>
