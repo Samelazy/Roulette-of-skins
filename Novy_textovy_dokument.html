@@ -385,7 +385,6 @@
 				${htmlCatalog}
 			</ul>
 		`; // Отрисовывает обёртку со всеми элементами массива
-
 				ROOT_PRODUCTS.innerHTML = html;
 			}
 		}
@@ -394,13 +393,11 @@
 		const skinsPage = new Skins();
 		skinsPage.render()
 
-
 		const allTapes = Array.from(document.querySelectorAll('.tape')) // Получаем массив уже отрендеренных скинов
 		const allTapesNum = allTapes.length; //Получаем длину этого массива 
 
 		const tapeWidth = document.querySelector('.tape').clientWidth // считаем ширину одного скина
 		const tapesWrapper = document.querySelector('#boxes').setAttribute('style', `width: ${tapeWidth * allTapesNum * 1.5}px`) // Задаём ширину обёртке скинов на основе ширины одного скина и и их количества
-
 
 		function start() {
 
@@ -418,7 +415,6 @@
 				var child3 = $(".tape:nth-child(3) img"); // Подсвечиваем товар которdый по середине
 				var firS = $(".tape:first-child");
 				var cons = righ - delbox;	 //считаем на сколько блок зашел за границу
-
 
 				if (righ >= delbox) { 		//если блок за границей
 					firS.remove();			// удаляем его
