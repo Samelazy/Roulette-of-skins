@@ -228,7 +228,7 @@
 	<div class="blscreen">
 		<div class="winblock">
 			<button class="close">×</button>
-			<h3>Ваш выйгрыш</h3>
+			<h3>Ваш выигрыш</h3>
 			<div class="addimg">
 				<!-- Сюда выводится картинка выигранного скина -->
 			</div>
@@ -239,6 +239,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 	<script>
+
 		// Каталог всех скинов
 		const CATALOG = [
 			{
@@ -384,24 +385,24 @@
 		const allTapesNum = allTapes.length; //Получаем длину этого массива 
 
 		const tapeWidth = document.querySelector('.tape').clientWidth // считаем ширину одного скина
-		const tapesWrapper = document.querySelector('#boxes').setAttribute('style', `width: ${tapeWidth * allTapesNum * 1.5}px`) // Задаём ширину обёртке скинов на основе ширины одного скина и и их количества
+		const tapesWrapper = document.querySelector('#boxes').setAttribute('style', `width: ${tapeWidth * allTapesNum * 1.5}px`) // Задаём ширину обёртке скинов на основе ширины одного скина и их количества
 
 		function start() {
 
-			var boxed = 3; // начинаем считать кейсы
-			var righ = 0;   // делаем анимацию увеличивая позицию в право
-			var speed = Math.floor(Math.random() * (20 - 25 + 1)) + 25;  // Скорость прокрутки рулетки
-			var delbox = tapeWidth; //Ширина кейса для удаления его
-			var tim = setInterval(animated, 5);
+			let boxed = 3; // начинаем считать кейсы
+			let righ = 0;   // делаем анимацию увеличивая позицию в право
+			let speed = Math.floor(Math.random() * (20 - 25 + 1)) + 25;  // Скорость прокрутки рулетки
+			let delbox = tapeWidth; //Ширина кейса для удаления его
+			let tim = setInterval(animated, 5);
 
 			$(".mainbutt").css("opacity", "0.5");
 			$(".mainbutt").removeAttr("onclick");
 
 			function animated() {
 
-				var child3 = $(".tape:nth-child(3) img"); // Подсвечиваем товар которdый по середине
-				var firS = $(".tape:first-child");
-				var cons = righ - delbox;	 //считаем на сколько блок зашел за границу
+				let child3 = $(".tape:nth-child(3) img"); // Подсвечиваем товар которdый по середине
+				let firS = $(".tape:first-child");
+				let cons = righ - delbox;	 //считаем на сколько блок зашел за границу
 
 				if (righ >= delbox) { 		//если блок за границей
 					firS.remove();			// удаляем его
@@ -435,38 +436,68 @@
 				if (speed <= 0) {
 					clearInterval(tim);
 					$(".tape").animate({ right: `${delbox / 2}` }, 2400);
-					let wonItemId = $(".tape:nth-child(3) img").attr("alt") // Берём число в атрибуте alt выигранного скина
-					let wonItem = CATALOG[wonItemId] // По этому числу находим в массиве выигранный скин
 
-					$(".winblock .addimg").append(`
-					<li class='tape'>
-						<img src='${wonItem.img}' alt='${wonItem.id}' class='tape-img'>
-						<div class="tape__info">
-							<p class="tape__info-name">${wonItem.name}</p>	
-							<p class="tape__info-price">From <span>$ ${wonItem.price}</span> </p>
-						</div>
-					</li>`); // Отрисовываем новый случайный объект в рулетку
+					function wonSkin() {
+						const mxwidthWidth = document.querySelector('#mxwidth').clientWidth // Получаем ширину родителя карточек
+						const mxwidthWidthHalf = mxwidthWidth / 2
+
+						let element = document.getElementById('mxwidth'); // Указываем родителя,относительно которого будем дальше брать элемент по координатам 
+						let rect = element.getBoundingClientRect(); // Получаем координаты родителя
+						let scrollTop = document.documentElement.scrollTop ?
+							document.documentElement.scrollTop : document.body.scrollTop; // Проверка на наличие скролла(не попадаем ли мы вне окна браузера что бы не получить null)
+						let scrollLeft = document.documentElement.scrollLeft ?
+							document.documentElement.scrollLeft : document.body.scrollLeft; // Проверка на наличие скролла(не попадаем ли мы вне окна браузера что бы не получить null)
+						let elementTop = rect.top + scrollTop; // Получаем координаты сверху
+						let elementLeft = rect.left + scrollLeft; // Получаем координаты слева
+
+						let wonTapeX = elementLeft + mxwidthWidthHalf; // Готовим координаты слева  + половина ширины родителя для получения центрального объекта
+						let wonTapeY = elementTop + 50; // Готовим координаты сверху что бы попасть в картинку центрального элемента
+
+						let tapeElement = document.elementFromPoint(wonTapeX, wonTapeY); // "Натыкаемся" координатами на элемент,который нам нужно получить
+
+						if (tapeElement.hasAttribute("alt")) { // Проверяет попал ли на объект с атрибутом alt (на картинку) и тогда получаем выигранный скин
+							let wonItemId = $(tapeElement).attr("alt") // Берём число в атрибуте alt выигранного скина
+							let wonItem = CATALOG[wonItemId] // По этому числу находим в массиве выигранный скин
+
+							$(".winblock .addimg").append(`
+						<li class='tape'>
+							<img src='${wonItem.img}' alt='${wonItem.id}' class='tape-img'>
+							<div class="tape__info">
+								<p class="tape__info-name">${wonItem.name}</p>	
+								<p class="tape__info-price">From <span>$ ${wonItem.price}</span> </p>
+							</div>
+						</li>`); // Отрисовываем выигранный скин в модалку
+						} else if (tapeElement.childNodes[1].hasAttribute("alt")) { // Если прошлое условие не выполнилось Проверяет есть ли у первого ребёнка попавшегося объекта наличие атрибута alt
+							let wonItemId = $(tapeElement.childNodes[1]).attr("alt") // Берём число в атрибуте alt выигранного скина
+							let wonItem = CATALOG[wonItemId] // По этому числу находим в массиве выигранный скин
+
+							$(".winblock .addimg").append(`
+						<li class='tape'>
+							<img src='${wonItem.img}' alt='${wonItem.id}' class='tape-img'>
+							<div class="tape__info">
+								<p class="tape__info-name">${wonItem.name}</p>	
+								<p class="tape__info-price">From <span>$ ${wonItem.price}</span> </p>
+							</div>
+						</li>`); // Отрисовываем выигранный скин в модалку
+						}
+					}
+					setTimeout(wonSkin, 2000)
 					setTimeout(swi, 2500);
 				}
 			}
 		}
-		function swi() {
-			var nnu = $(".tape:nth-child(3) img").attr("alt");
 
+		function swi() {
 			$(".mainbutt").attr("onclick", "start()");
 			$(".blscreen").toggle(400);
 			$("button").css("opacity", "1");
-
-			let winBlockId = nnu
-			return winBlockId
 		}
-		//делаем список что выпадает
+
 		$(function () {
 			$(".close,.winbutt").click(function () {
 				$(".blscreen").toggle(400);
 			})
 		});
-
 
 	</script>
 </body>
